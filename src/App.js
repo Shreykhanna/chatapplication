@@ -12,11 +12,13 @@ class App extends Component {
   {
     super()
     this.state={
-      messages:[]
+      messages:[],
+      joinableRooms:[],
+      joinedRooms:[]
     }
+    this.sendMessage=this.sendMessage.bind(this)
 }
-
-  componentDidMount(){
+ componentDidMount(){
     const chatManager=new ChatKit.ChatManager({
       instanceLocator,
       userId : 'tester',
@@ -26,7 +28,15 @@ class App extends Component {
     })
       chatManager.connect().then(currentUser=>
       {
-        currentUser.subscribeToRoom({
+        this.currentUser=currentUser
+        this.currentUser.getJoinableRooms().then(joinableRooms =>{
+          this.setState({
+            joinableRooms,
+            joinedRooms:this.currentUser.rooms
+          })
+        })
+        .catch(error=>console.log("error in joinable rooms : "+error))
+        this.currentUser.subscribeToRoom({
           roomId: 19387809,
           hooks : {
              onNewMessage:message=>{
@@ -37,15 +47,22 @@ class App extends Component {
              }
            }
          })
-    });
-
-}
-  render(){
+           })
+    .catch(error=>console.log("Error in Connecting.... : "+error))
+  }
+    sendMessage(text){
+      console.log("inside send message method")
+      this.currentUser.sendMessage({
+          text,
+          roomId:19387809
+        })
+    }
+ render(){
     return(
       <div className="App">
-        
+      <RoomList rooms={[...this.state.joinableRooms],[...this.state.joinedRooms]}/>
         <MessageList messages={this.state.messages}/>
-
+        <SendMessageForm sendMessage={this.sendMessage}/>
       </div>
     );
   }
