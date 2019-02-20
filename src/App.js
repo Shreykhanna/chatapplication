@@ -12,6 +12,7 @@ class App extends Component {
   {
     super()
     this.state={
+      roomId:null,
       messages:[],
       joinableRooms:[],
       joinedRooms:[]
@@ -38,13 +39,15 @@ class App extends Component {
           })
         })
         .catch(error=>console.log("error in joinable rooms : "+error))
-        this.subscribeToRoom();
-           })
+    })
     .catch(error=>console.log("Error in Connecting.... : "+error))
   }
-  subscribeToRoom(){
+  subscribeToRoom(roomId){
+    this.setState({
+      message:[]
+    })
     this.currentUser.subscribeToRoom({
-    roomId: 19387809,
+    roomId: roomId,
     hooks : {
        onNewMessage:message=>{
          console.log('message.text',message.text);
@@ -54,18 +57,22 @@ class App extends Component {
        }
      }
    })
+   .then(room=>{
+     this.getRooms()
+   })
+   .catch(err => console.log('Error in joining the rooms : ' + err))
   }
-    sendMessage(text){
+  sendMessage(text){
       console.log("inside send message method")
       this.currentUser.sendMessage({
           text,
-          roomId:19387809
+          roomId:this.state.roomId
         })
     }
  render(){
     return(
       <div className="App">
-      <RoomList rooms={[...this.state.joinableRooms],[...this.state.joinedRooms]}/>
+       <RoomList rooms={[...this.state.joinableRooms],[...this.state.joinedRooms]} subscribeToRoom={this.subscribeToRoom}/>
         <MessageList messages={this.state.messages}/>
         <SendMessageForm sendMessage={this.sendMessage}/>
       </div>
