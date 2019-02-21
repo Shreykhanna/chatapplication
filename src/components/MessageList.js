@@ -5,19 +5,28 @@ import ReactDom from 'react-dom'
 class MessageList extends React.Component{
 
 componenWillUpdate(){
-  const node=ReactDOM.findDOMNode(this)
+  const node=ReactDom.findDOMNode(this)
   this.shouldScrollToBottom=node.scrollTop + node.clientHeight +100 >= node.scrollHeight
 }
   componentDidUpdate(){
     if(this.shouldScrollToBottom){
-    const node=ReactDOM.findDOMNode(this)
+    const node=ReactDom.findDOMNode(this)
     node.scrollTop=node.scrollHeight
   }
   }
 
   render()
   {
-    return(
+      if(!this.props.roomId){
+        return(
+          <div className="message-list">
+                    <div className="join-room">
+                        &larr; Join a room!
+                    </div>
+                </div>
+        )
+      }
+      return(
       <div className="message-list">
         {this.props.messages.map((message,index)=>{
           return(

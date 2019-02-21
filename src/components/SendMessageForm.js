@@ -26,7 +26,7 @@ render()
   console.log(this.state.message);
   return(
   <form  className="send-message-form" onSubmit={this.handleSubmit}>
-  <input type="text" onChange={this.handleChange} value={this.state.message} placeholder="Type your message here"/>
+  <input type="text" onChange={this.handleChange} value={this.state.message} placeholder="Type your message here" disabled={this.props.disabled}/>
   </form>
   )
 }
