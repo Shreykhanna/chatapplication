@@ -19,7 +19,7 @@ html, body {
     height: 100%;
 }
 
-.app {
+.App {
     display: grid;
     height: 100%;
     grid-template-columns: repeat(6, 1fr);
