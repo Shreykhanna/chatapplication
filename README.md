@@ -4,10 +4,10 @@ Familiar with Git?
 
 Checkout this repo, install dependencies, then start process with the following:
 
-> git clone https://github.com/Shreykhanna/chatapplication.git
-> cd chatapplication
-> npm install
-> npm start
+. git clone https://github.com/Shreykhanna/chatapplication.git
+. cd chatapplication
+. npm install
+. npm start
 
 Not Familiar with Git?
 
